@@ -1,0 +1,111 @@
+VERİ GİRİŞLERİ
+use MutluCafe
+go
+
+INSERT INTO MasaDurumlari (DurumAd) VALUES 
+('Bos'),
+('Dolu'),            -- masaIdlerini forign key kullanarak nf kuralı için ıdleri kullandık 
+('Rezerve'), 
+('Bakimda');
+
+INSERT INTO Kategoriler (KategoriAd) VALUES 
+('Baslangic'),
+('Ana Yemek'), 
+('Salata'),
+('Tatli'), 
+('Icecek'),    --ID'LER INDITIY SAYESİNDE OTOMATİK OLUŞUYOR ONDAN KULLANMADIM
+('Corba'), 
+('Ara Sicak'),
+('Fast Food'), 
+('Izgara'),
+('Kahvalti');
+
+INSERT INTO Musteriler (Ad, Soyad, Telefon) VALUES 
+('Ahmet', 'Yilmaz', '05321112233'), 
+('Ayse', 'Demir', '05332223344'),
+('Mehmet', 'Kaya', '05443334455'), 
+('Fatma', 'Celik', '05554445566'), 
+('Ali', 'Can', '05315556677'),
+('Zeynep', 'Ak', '05386667788'),
+('Murat', 'Oz', '05057778899'), 
+('Elif', 'Sahin', '05398889900'),
+('Hasan', 'Aydin', '05309990011'),
+('Selin', 'Yildiz', '05320001122');
+
+INSERT INTO Personel (Ad, Soyad, Gorev, Maas) VALUES 
+('Can', 'Korkmaz', 'Garson', 17500), 
+('Ece', 'Bulut', 'Garson', 17500), 
+('Okan', 'Yener', 'Ascı', 25000), 
+('Mert', 'Aslan', 'Sef', 30000), 
+('Sude', 'Tan', 'Kasiyer', 18000),
+('Emre', 'Koc', 'Garson', 17500), 
+('Asli', 'Guler', 'Ascı', 22000),
+('Bora', 'Tekin', 'Garson', 17500),
+('Deniz', 'Ucar', 'Temizlik', 17000),
+('Arda', 'Sari', 'Mudur', 35000);
+
+INSERT INTO Masalar (MasaNo, Kapasite, DurumID) VALUES 
+(1, 5, 1),
+(2, 2, 1),
+(3, 8, 1), 
+(4, 8, 1), 
+(5, 10, 1),
+(6, 4, 1),       --forign keyler sayesinde ıdler ile girişler karışmadı
+(7, 2, 1),
+(8, 4, 1), 
+(9, 2, 1),
+(10, 2, 1);  
+
+INSERT INTO Menu (KategoriID, UrunAd, Fiyat, StokMiktari) VALUES 
+(1, 'Mercimek Corbasi', 80, 50), 
+(2, 'Adana Kebap', 350, 30), 
+(3, 'Coban Salata', 120, 40),
+(4, 'Baklava', 150, 20), 
+(5, 'Ayran', 40, 100),
+(7,'Zeytinyağlı Yaprak Sarma(5 Adet)', 120,300 ),
+(2, 'Kuzu Sis', 400, 25),
+(9, 'Izgara Köfte' ,180 , 350),
+(10,'Serpme Kahvaltı(kişi başı fiyat)', 450,100),
+(4,'Magnolya(çilekli,muzlu,çikolatalı)',120,100),
+(5, 'Kola', 50, 80),
+(1, 'Ezogelin Corba', 80, 50),
+(8,'Hamburger(patetesli menü)',250,120),
+(4, 'Sutlac', 100, 15), 
+(2, 'Beyti', 380, 20),
+(8,'Pizza',365,30);
+
+INSERT INTO Rezervasyonlar (MusteriID, MasaID, RezervasyonTarihi, KisiSayisi) VALUES
+(1, 1, '2023-12-27 19:00', 5),
+(2, 3, '2023-12-27 20:00', 2),
+(3, 5, '2023-12-28 18:30', 6),
+(4, 7, '2023-12-28 21:00', 8),
+(5, 9, '2023-12-29 12:00', 10),
+(6, 2, '2023-12-29 19:30', 4),
+(7, 4, '2023-12-30 20:00', 2),
+(8, 6, '2023-12-30 15:00', 3),
+(9, 8, '2023-12-31 22:00', 2), 
+(10, 10, '2023-12-31 23:00',2);
+
+INSERT INTO Siparisler (MasaID, PersonelID, SiparisTarihi, ToplamTutar) VALUES 
+(1, 1, GETDATE(), 430),
+(2, 1, GETDATE(), 80),
+(3, 2, GETDATE(), 1200), 
+(4, 2, GETDATE(), 500), 
+(5, 6, GETDATE(), 1500),
+(6, 6, GETDATE(), 200),
+(7, 8, GETDATE(), 2500), 
+(8, 8, GETDATE(), 600), 
+(9, 1, GETDATE(), 3200),
+(10, 2, GETDATE(), 1550);
+
+INSERT INTO Odemeler (SiparisID, OdemeYontemi, OdemeTarihi) VALUES 
+(1, 'Nakit', GETDATE()), 
+(2, 'Kredi Karti', GETDATE()),
+(3, 'Nakit', GETDATE()),
+(4, 'Kredi Karti', GETDATE()),
+(5, 'Nakit', GETDATE()),
+(6, 'Kredi Karti', GETDATE()),  --GETDATE sayesinde veriyi girdiğimiz saat otomatik giriş yapıldı
+(7, 'Nakit', GETDATE()),
+(8, 'Kredi Karti', GETDATE()),
+(9, 'Nakit', GETDATE()), 
+(10, 'Kredi Karti', GETDATE());  

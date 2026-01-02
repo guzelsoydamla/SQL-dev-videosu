@@ -1,0 +1,112 @@
+
+CREATE TRIGGER MasaDoldu
+ON Siparisler 
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Masalar 
+    SET DurumID = 2
+    WHERE MasaID = (SELECT MasaID FROM inserted)
+END;
+GO
+
+CREATE TRIGGER MasaBosaldı
+ON Odemeler
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Masalar 
+    SET DurumID = 1 
+    WHERE MasaID = (SELECT MasaID FROM Siparisler WHERE SiparisID = (SELECT SiparisID FROM inserted))
+END;
+GO
+
+  CREATE TRIGGER ToplamTutarHesapla
+ON Siparisler AFTER UPDATE AS
+BEGIN
+    UPDATE Siparisler 
+    SET ToplamTutar = ToplamTutar + 200 -- Sabit bir servis bedeli eklediğimizi varsayalım
+    WHERE SiparisID = (SELECT SiparisID FROM inserted)
+END;
+
+GO
+
+CREATE TRIGGER CiroKontrol
+ON Siparisler
+ AFTER INSERT
+ AS
+BEGIN
+    UPDATE Siparisler 
+    SET ToplamTutar = (SELECT SUM(Fiyat) FROM Menu WHERE KategoriID = 4)
+    WHERE SiparisID = (SELECT SiparisID FROM inserted)
+END;
+
+GO
+
+CREATE TRIGGER MaasBahsis
+ON Personel
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Personel
+    SET Maas = Maas + 200
+    WHERE PersonelID = (SELECT PersonelID FROM inserted)
+END;
+GO
+
+CREATE TRIGGER SiparisSilinceMasaBos
+ON Siparisler 
+AFTER DELETE 
+AS
+BEGIN
+    UPDATE Masalar
+    SET DurumID = 1 
+    WHERE MasaID = (SELECT MasaID FROM deleted)
+END;
+GO
+
+CREATE TRIGGER FiyatDegistiStokSifirla
+ON Menu
+AFTER UPDATE 
+AS
+BEGIN
+    UPDATE Menu
+    SET StokMiktari = 0
+    WHERE UrunID = (SELECT UrunID FROM inserted)
+END;
+GO
+
+CREATE TRIGGER SiparisTutarArtir
+ON Siparisler
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Siparisler 
+    SET ToplamTutar = ToplamTutar + 100 
+    WHERE SiparisID = (SELECT SiparisID FROM inserted)
+END;
+GO
+
+CREATE TRIGGER MusteriGitti
+ON Rezervasyonlar 
+AFTER DELETE 
+AS
+BEGIN
+    UPDATE Masalar 
+    SET DurumID = 1 
+    WHERE MasaID = (SELECT MasaID FROM deleted)
+END;
+GO
+
+CREATE TRIGGER KdvEkle
+ON Menu
+AFTER INSERT
+AS
+BEGIN
+    UPDATE Menu 
+    SET Fiyat = Fiyat * 1.10
+    WHERE UrunID = (SELECT UrunID FROM inserted)
+END;
+GO
+
+https://github.com/guzelsoydamla

@@ -1,0 +1,114 @@
+use MutluCafe 
+go 
+
+CREATE PROCEDURE MusteriEkle
+    @Ad NVARCHAR(50),
+    @Soyad NVARCHAR(50),
+    @Tel CHAR(11)
+AS
+BEGIN
+    INSERT INTO Musteriler (Ad, Soyad, Telefon) VALUES (@Ad, @Soyad, @Tel);
+END;
+
+go
+
+CREATE PROCEDURE RezervasyonEkle
+    @MusteriID INT,
+    @MasaID INT, 
+    @Tarih DATETIME, 
+    @Kisi INT
+AS
+BEGIN
+    INSERT INTO Rezervasyonlar (MusteriID, MasaID, RezervasyonTarihi, KisiSayisi)
+    VALUES (@MusteriID, @MasaID, @Tarih, @Kisi);
+END;
+
+go
+
+CREATE PROCEDURE MasaRezerveEt
+@MasaID INT
+AS
+BEGIN
+    UPDATE Masalar 
+    SET DurumID = 3     --ID=3 neye denk geliyorsa onu yazar masa durumuna
+    WHERE MasaID = @MasaID;
+END;
+
+go
+
+CREATE PROCEDURE MenuUrunEkle
+    @KatagorıID INT,
+    @Ad NVARCHAR(150), 
+    @Fiyat DECIMAL(18,0),
+    @Stok INT
+AS
+BEGIN
+    INSERT INTO Menu (KategoriID, UrunAd, Fiyat, StokMiktari)
+    VALUES (@KatagorıID, @Ad, @Fiyat, @Stok);
+END;
+
+go
+
+CREATE PROCEDURE SiparisAl
+    @MasaID INT,
+    @PersonelID INT
+AS
+BEGIN
+    INSERT INTO Siparisler (MasaID, PersonelID, SiparisTarihi, ToplamTutar)
+    VALUES (@MasaID, @PersonelID, GETDATE(), 0);
+END;
+
+go 
+
+CREATE PROCEDURE FiyatGuncelleme 
+@UrunID INT,
+@YeniFiyat DECIMAL
+AS
+BEGIN
+    UPDATE Menu 
+    SET Fiyat = @YeniFiyat 
+    WHERE UrunID = @UrunID;
+END;
+
+go
+
+CREATE PROCEDURE MasaBosaldı
+@MasaID INT
+AS
+BEGIN
+    UPDATE Masalar 
+    SET DurumID = 1
+    WHERE MasaID = @MasaID;
+END;
+
+go
+
+CREATE PROCEDURE MusteriSil
+@MusteriID INT
+AS
+BEGIN
+    DELETE FROM Musteriler 
+    WHERE MusteriID = @MusteriID;
+END;
+
+go
+
+CREATE PROCEDURE PersonelSil
+    @PersonelID INT
+AS
+BEGIN
+    DELETE FROM Personel 
+    WHERE PersonelID = @PersonelID;
+END;
+
+go
+
+CREATE PROCEDURE KapasiteGuncelle
+    @MasaID INT,
+    @YeniKapasite INT
+AS
+BEGIN
+    UPDATE Masalar 
+    SET Kapasite = @YeniKapasite 
+    WHERE MasaID = @MasaID;
+END;

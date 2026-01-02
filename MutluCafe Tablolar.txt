@@ -1,0 +1,57 @@
+CREATE DATABASE MutluCafe 
+go --Database oluşturduk
+
+
+CREATE TABLE MasaDurumlari (
+    DurumID INT PRIMARY KEY IDENTITY(1,1),
+    DurumAd NVARCHAR(50));
+
+CREATE TABLE Kategoriler (
+    KategoriID INT PRIMARY KEY IDENTITY(1,1),
+    KategoriAd NVARCHAR(100));
+
+CREATE TABLE Musteriler (
+    MusteriID INT PRIMARY KEY IDENTITY(1,1),
+    Ad NVARCHAR(50),
+    Soyad NVARCHAR(50),
+    Telefon CHAR(11));
+
+CREATE TABLE Personel (
+    PersonelID INT PRIMARY KEY IDENTITY(1,1),
+    Ad NVARCHAR(50),
+    Soyad NVARCHAR(50),
+    Gorev NVARCHAR(50),
+    Maas DECIMAL);
+
+CREATE TABLE Masalar (
+    MasaID INT PRIMARY KEY IDENTITY(1,1), --IDleri otomatik olarak bir bir artırır
+    MasaNo INT UNIQUE,   --aynı iki veri girilmesini engeller
+    Kapasite INT,
+    DurumID INT FOREIGN KEY REFERENCES MasaDurumlari(DurumID));
+
+CREATE TABLE Menu (
+    UrunID INT PRIMARY KEY IDENTITY(1,1),
+    KategoriID INT FOREIGN KEY REFERENCES Kategoriler(KategoriID),
+    UrunAd NVARCHAR(150),
+    Fiyat DECIMAL(10,2),
+    StokMiktari INT);
+
+CREATE TABLE Rezervasyonlar (
+    RezervasyonID INT PRIMARY KEY IDENTITY(1,1),
+    MusteriID INT FOREIGN KEY REFERENCES Musteriler(MusteriID),
+    MasaID INT FOREIGN KEY REFERENCES Masalar(MasaID),
+    RezervasyonTarihi DATETIME,
+    KisiSayisi INT);
+
+CREATE TABLE Siparisler (
+    SiparisID INT PRIMARY KEY IDENTITY(1,1),
+    MasaID INT FOREIGN KEY REFERENCES Masalar(MasaID),
+    PersonelID INT FOREIGN KEY REFERENCES Personel(PersonelID),
+    SiparisTarihi DATETIME DEFAULT GETDATE(),
+    ToplamTutar DECIMAL DEFAULT); --boş bırakılırsa otomatik kendince değer atar  
+
+CREATE TABLE Odemeler (
+    OdemeID INT PRIMARY KEY IDENTITY(1,1),   
+    SiparisID INT FOREIGN KEY REFERENCES Siparisler(SiparisID),
+    OdemeYontemi NVARCHAR(20), -- Nakit veya Kredi Kartı
+    OdemeTarihi DATETIME DEFAULT GETDATE() ); --otomatik olarak tarih saatı girer sana gerek kalmaz
